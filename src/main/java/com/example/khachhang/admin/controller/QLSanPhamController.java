@@ -7,6 +7,7 @@ import com.example.khachhang.repository.MauSacRepository;
 import com.example.khachhang.repository.SanPhamCTRepository;
 import com.example.khachhang.repository.SanPhamRepository;
 import com.example.khachhang.repository.ThuongHieuRepository;
+import com.example.khachhang.service.CloudinaryService;
 import com.example.khachhang.service.SanPhamCTService;
 import com.example.khachhang.service.SanPhamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,11 @@ public class QLSanPhamController {
 
     @Autowired
     private SanPhamCTRepository sanPhamCTRepository;
+
+
+
+    @Autowired
+    private CloudinaryService cloudinaryService;
 
 
 
@@ -156,9 +162,9 @@ public class QLSanPhamController {
             if (anhSP != null && !anhSP.isEmpty()) {
                 try {
                     // Save the new image
-                    String imagePath = sanPhamService.saveImage(anhSP);
+                    String imagePath = cloudinaryService.uploadFile(anhSP);
                     sp.setAnhSP(imagePath);
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace(); // Handle exceptions appropriately
                     return "redirect:/san_pham/edit/" + id + "?error=image_upload_failed";
                 }

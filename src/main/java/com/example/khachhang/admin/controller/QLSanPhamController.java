@@ -47,6 +47,9 @@ public class QLSanPhamController {
     private SanPhamCTRepository sanPhamCTRepository;
 
 
+    @Autowired
+        private SanPhamRepository    sanPhamRepository;
+
 
     @Autowired
     private CloudinaryService cloudinaryService;
@@ -112,9 +115,9 @@ public class QLSanPhamController {
     @PostMapping("/add")
     public ResponseEntity<Integer> saveSanPham(@RequestBody SanPhamDTO spDto) {
         try {
-//            SanPham savedProduct = sanPhamService.save(spDto);
-//            return ResponseEntity.ok(savedProduct.getId());
-                        return ResponseEntity.ok(12);
+            SanPham savedProduct = sanPhamService.save(spDto, null);
+            return ResponseEntity.ok(savedProduct.getId());
+//                        return ResponseEntity.ok(12);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
@@ -146,6 +149,23 @@ public class QLSanPhamController {
         }
         return "admin/san_pham/update";
     }
+
+    @PostMapping("/upload-image")
+    public ResponseEntity<Integer> uploadImage(@RequestParam("imageFile") MultipartFile imageFile,
+                                               @RequestParam("id") String id) {
+        String urlPath = cloudinaryService.uploadFile(imageFile);
+        SanPham sp = null;
+        if (sanPhamRepository.findById(Integer.valueOf(id)).isPresent()) {
+
+            sp = sanPhamRepository.findById(Integer.valueOf(id)).get();
+            sp.setAnhSP(urlPath);
+
+            sanPhamRepository.save(sp);
+        }
+
+        return ResponseEntity.ok(12);
+    }
+
     @PostMapping("update/{id}")
     public String updateCustomer(
             @PathVariable("id") Integer id,

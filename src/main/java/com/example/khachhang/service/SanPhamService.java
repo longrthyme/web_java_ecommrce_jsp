@@ -89,8 +89,10 @@ public class SanPhamService {
         sp.setLoai(dto.getLoai());
         sp.setTrangThai(true);
 
-        String imagePath = saveImage(imageFile);
-        sp.setAnhSP(imagePath);
+        if(imageFile !=null && !imageFile.isEmpty())  {
+            String imagePath = saveImage(imageFile);
+            sp.setAnhSP(imagePath);
+        }
 
 
         return spRepo.save(sp);

@@ -158,6 +158,7 @@
         <h4>Thêm Ảnh</h4>
         <input type="file" id="productImage" class="form-control" />
         <button type="button" id="uploadImageBtn" class="btn btn-primary mt-2">Thêm Ảnh</button>
+         <div id="uploadResult" class="mt-2"></div>
     </div>
 </div>
 
@@ -210,6 +211,9 @@
 </div>
 
 <script>
+
+var  tempProductId = 0;
+
     document.getElementById('addProductBtn').addEventListener('click', () => {
         const maSP = document.getElementById('maSP').value;
         const tenSP = document.getElementById('tenSP').value;
@@ -244,7 +248,7 @@
             .then(newProductId => {
                 alert('Thêm sản phẩm thành công!');
                 document.getElementById('productForm').reset();
-                window.productId = newProductId;
+                tempProductId = newProductId;
                 document.getElementById('productForm').style.display = 'none';;
                 document.getElementById('detailsSection').style.display = 'block';
                 document.getElementById('imageSection').style.display = 'block';
@@ -265,7 +269,7 @@
         detailModal.show();
     });
 
-    var  tempProductId = 0;
+
 
     document.getElementById('confirmDetailBtn').addEventListener('click', () => {
         const mauSacId = document.getElementById('mauSac').value;
@@ -278,15 +282,13 @@
             return;
         }
 
-        const productId = window.productId; // Replace with the actual product ID
-        tempProductId = productId;
-
+console.log("prdocut id is "  + tempProductId);
             const payload = {
                 idMauSac: mauSacId,
                 idThuongHieu: thuongHieuId,
                 kichCo: kichCo,
                 soLuong: soLuong,
-                idSanPham: productId
+                idSanPham: tempProductId
             };
 
 
@@ -330,7 +332,6 @@ const thuongHieuText = thuongHieuElement.options[thuongHieuElement.selectedIndex
 console.log('Selected Thương Hiệu Text:', thuongHieuText);
 
 
-
 console.log("mau sac " + mauSac);
 console.log("thuong hieu " + thuongHieu);
         const status = soLuong > 0 ? 'Còn hàng' : 'Hết hàng';
@@ -356,6 +357,39 @@ console.log("thuong hieu " + thuongHieu);
         detailModal.hide();
 
     });
+
+
+      document.getElementById("uploadImageBtn").addEventListener("click", async () => {
+            const productImage = document.getElementById("productImage").files[0];
+            const uploadResult = document.getElementById("uploadResult");
+
+            if (!productImage) {
+                uploadResult.innerHTML = "<p style='color: red;'>Vui lòng chọn một tệp để tải lên.</p>";
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("imageFile", productImage);
+
+            formData.append("id", tempProductId);
+
+            try {
+                const response = await fetch("/san-pham/upload-image", {
+                    method: "POST",
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    uploadResult.innerHTML = `<p style='color: green;'>Tải ảnh lên thành công: ${data.fileName}</p>`;
+                } else {
+                    uploadResult.innerHTML = `<p style='color: red;'>Lỗi tải lên ảnh. Vui lòng thử lại.</p>`;
+                }
+            } catch (error) {
+                console.error("Error uploading image:", error);
+                uploadResult.innerHTML = "<p style='color: red;'>Lỗi kết nối với máy chủ.</p>";
+            }
+        });
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

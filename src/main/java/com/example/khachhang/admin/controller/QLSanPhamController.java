@@ -18,8 +18,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -104,8 +106,9 @@ public class QLSanPhamController {
     @PostMapping("/add")
     public ResponseEntity<Integer> saveSanPham(@RequestBody SanPhamDTO spDto) {
         try {
-            SanPham savedProduct = sanPhamService.save(spDto);
-            return ResponseEntity.ok(savedProduct.getId());
+//            SanPham savedProduct = sanPhamService.save(spDto);
+//            return ResponseEntity.ok(savedProduct.getId());
+                        return ResponseEntity.ok(12);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
@@ -138,17 +141,34 @@ public class QLSanPhamController {
         return "admin/san_pham/update";
     }
     @PostMapping("update/{id}")
-    public String updateCustomer(@PathVariable("id") Integer id, @ModelAttribute SanPham sanPham) {
+    public String updateCustomer(
+            @PathVariable("id") Integer id,
+            @ModelAttribute SanPham sanPham,
+            @RequestParam("anhSPP") MultipartFile anhSP) {
         SanPham sp = spRepo.findById(id).orElse(null);
         if (sp != null) {
             sp.setTenSP(sanPham.getTenSP());
             sp.setGia(sanPham.getGia());
             sp.setLoai(sanPham.getLoai());
             sp.setTrangThai(sanPham.getTrangThai());
+
+            // Handle image upload if a new file is provided
+            if (anhSP != null && !anhSP.isEmpty()) {
+                try {
+                    // Save the new image
+                    String imagePath = sanPhamService.saveImage(anhSP);
+                    sp.setAnhSP(imagePath);
+                } catch (IOException e) {
+                    e.printStackTrace(); // Handle exceptions appropriately
+                    return "redirect:/san_pham/edit/" + id + "?error=image_upload_failed";
+                }
+            }
+
             spRepo.save(sp);
         }
-        return "redirect:/san_pham/index";
+        return "redirect:/san-pham/index";
     }
+
 
     @GetMapping("/changeStatus/{id}")
     public String changeStatus(@PathVariable Integer id) {

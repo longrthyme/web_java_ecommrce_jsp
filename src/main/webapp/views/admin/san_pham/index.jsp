@@ -579,7 +579,7 @@
                 <c:forEach items="${data}" var="sp">
                     <tr>
                         <td>${sp.id}</td>
-                        <td><img class="product-img" src="${sp.anhSP}" alt="${sp.tenSP}"></td>
+                        <td><img class="product-img" src="<c:url value='${sp.anhSP}' />" alt="${sp.tenSP}"></td>
                         <td>${sp.maSP}</td>
                         <td>${sp.tenSP}</td>
                         <td><fmt:formatNumber value="${sp.gia}" type="number" maxFractionDigits="0" /></td>

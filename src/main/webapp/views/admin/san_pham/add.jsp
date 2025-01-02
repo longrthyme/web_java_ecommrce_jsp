@@ -112,7 +112,8 @@
 <div class="container mt-4">
     <!-- Form Thêm Sản Phẩm -->
     <h3>Thêm Sản Phẩm đang bị lỗi</h3>
-    <form id="productForm">
+    <form id="productForm" action="/san-pham/add" method="POST">
+
         <div class="row">
             <div class="col-md-6">
                 <label for="maSP">Mã Sản Phẩm</label>
@@ -227,7 +228,7 @@
             loai
         };
 
-        fetch('/add', {
+        fetch('/san-pham/add', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(productData)
@@ -244,6 +245,7 @@
                 alert('Thêm sản phẩm thành công!');
                 document.getElementById('productForm').reset();
                 window.productId = newProductId;
+                document.getElementById('productForm').style.display = 'none';;
                 document.getElementById('detailsSection').style.display = 'block';
                 document.getElementById('imageSection').style.display = 'block';
             })
@@ -263,6 +265,8 @@
         detailModal.show();
     });
 
+    var  tempProductId = 0;
+
     document.getElementById('confirmDetailBtn').addEventListener('click', () => {
         const mauSacId = document.getElementById('mauSac').value;
         const thuongHieuId = document.getElementById('thuongHieu').value;
@@ -274,54 +278,85 @@
             return;
         }
 
-        const mauSac = document.querySelector(`#mauSac option[value="${mauSacId}"]`).textContent;
-        const thuongHieu = document.querySelector(`#thuongHieu option[value="${thuongHieuId}"]`).textContent;
+        const productId = window.productId; // Replace with the actual product ID
+        tempProductId = productId;
+
+            const payload = {
+                idMauSac: mauSacId,
+                idThuongHieu: thuongHieuId,
+                kichCo: kichCo,
+                soLuong: soLuong,
+                idSanPham: productId
+            };
+
+
+        console.log("data " + payload)
+        ;
+        fetch('/san-pham/detail/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to add product detail');
+                    }
+                    return response.text();
+                })
+                .then(message => {
+                    alert(message);
+                    document.getElementById('detailForm').reset();
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert('Lỗi khi thêm chi tiết sản phẩm!');
+                });
+
+        const selectElement = document.getElementById("mauSac");
+                  // Get the selected option's text
+                  const mauSac = selectElement.options[selectElement.selectedIndex].text;
+                  // Display the result
+
+
+
+const thuongHieuElement = document.getElementById('thuongHieu');
+const thuongHieuId2 = thuongHieuElement.value;
+
+// Get the text content of the selected option
+const thuongHieuText = thuongHieuElement.options[thuongHieuElement.selectedIndex].text;
+
+console.log('Selected Thương Hiệu Text:', thuongHieuText);
+
+
+
+console.log("mau sac " + mauSac);
+console.log("thuong hieu " + thuongHieu);
         const status = soLuong > 0 ? 'Còn hàng' : 'Hết hàng';
 
-        const newRow = `
-        <tr>
-            <td>${mauSac}</td>
-            <td>${thuongHieu}</td>
-            <td>${kichCo}</td>
-            <td>${soLuong}</td>
-            <td>${status}</td>
-            <td><button class="btn btn-warning btn-sm">Thay đổi trạng thái</button></td>
-        </tr>
-    `;
+           let newRow = "<tr>";
+               newRow += "<td>" + mauSac + "</td>";
+               newRow += "<td>" + thuongHieuText + "</td>";
+               newRow += "<td>" + kichCo + "</td>";
+               newRow += "<td>" + soLuong + "</td>";
+               newRow += "<td>" + status + "</td>";
+               newRow += "<td><button class='btn btn-warning btn-sm'>Thay đổi trạng thái</button></td>";
+               newRow += "</tr>";
+
+
+                                       console.log("Generated newRow:", newRow); // Log the constructed HTML string
+
+
+
         document.getElementById('detailsTable').insertAdjacentHTML('beforeend', newRow);
 
         document.getElementById('detailForm').reset();
         const detailModal = bootstrap.Modal.getInstance(document.getElementById('detailModal'));
         detailModal.hide();
 
-        const successMessage = document.createElement('div');
-        successMessage.className = 'alert alert-success mt-3';
-        successMessage.textContent = 'Thêm chi tiết sản phẩm thành công!';
-        document.getElementById('detailsSection').appendChild(successMessage);
-        setTimeout(() => successMessage.remove(), 3000);
-
-        document.getElementById('detailsSection').style.display = 'block';
     });
-    fetch(`/details/${window.productId}`)
-        .then(response => response.json())
-        .then(data => {
-            const tableBody = document.getElementById('detailsTable');
-            tableBody.innerHTML = '';
-            data.forEach(detail => {
-                const newRow = `
-                <tr>
-                    <td>${detail.mauSac}</td>
-                    <td>${detail.thuongHieu}</td>
-                    <td>${detail.kichCo}</td>
-                    <td>${detail.soLuong}</td>
-                    <td>${detail.trangThai ? "Còn hàng" : "Hết hàng"}</td>
-                    <td><button class="btn btn-warning btn-sm">Thay đổi trạng thái</button></td>
-                </tr>
-            `;
-                tableBody.insertAdjacentHTML('beforeend', newRow);
-            });
-        })
-        .catch(error => console.error('Error fetching product details:', error));
+
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

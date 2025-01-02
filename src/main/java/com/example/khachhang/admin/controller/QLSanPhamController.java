@@ -1,13 +1,13 @@
 package com.example.khachhang.admin.controller;
 
+import com.example.khachhang.dto.SanPhamCTDTO;
 import com.example.khachhang.dto.SanPhamDTO;
-import com.example.khachhang.entity.KhachHang;
-import com.example.khachhang.entity.MauSac;
-import com.example.khachhang.entity.SanPham;
-import com.example.khachhang.entity.ThuongHieu;
+import com.example.khachhang.entity.*;
 import com.example.khachhang.repository.MauSacRepository;
+import com.example.khachhang.repository.SanPhamCTRepository;
 import com.example.khachhang.repository.SanPhamRepository;
 import com.example.khachhang.repository.ThuongHieuRepository;
+import com.example.khachhang.service.SanPhamCTService;
 import com.example.khachhang.service.SanPhamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,10 +32,18 @@ public class QLSanPhamController {
     SanPhamService sanPhamService;
 
     @Autowired
+    private SanPhamCTService sanPhamCTService;
+
+    @Autowired
     private ThuongHieuRepository thuongHieuRepository;
 
     @Autowired
     private MauSacRepository mauSacRepository;
+
+    @Autowired
+    private SanPhamCTRepository sanPhamCTRepository;
+
+
 
     @GetMapping("index")
     public String index(Model model,
@@ -53,6 +61,9 @@ public class QLSanPhamController {
         model.addAttribute("totalPages", totalPages);
         return "admin/san_pham/index";
     }
+
+
+
 
     @GetMapping("search")
     public String search(
@@ -100,11 +111,16 @@ public class QLSanPhamController {
         }
     }
 
-    @GetMapping("/details/{id}")
-    @ResponseBody
-    public List<SanPhamDTO> getProductDetails(@PathVariable("id") Integer productId) {
-        return sanPhamService.getProductDetails(productId);
+    @PostMapping("/detail/add")
+    public ResponseEntity<String> createSanPhamCT(@RequestBody SanPhamCTDTO request) {
+        try {
+            sanPhamCTService.createSanPhamCT(request);
+            return ResponseEntity.ok("Chi tiết sản phẩm đã được thêm thành công!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi khi thêm chi tiết sản phẩm!");
+        }
     }
+
 
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") Integer id, Model model) {
@@ -113,7 +129,7 @@ public class QLSanPhamController {
         return "admin/san_pham/detail";
     }
 
-    @GetMapping("update/{id}")
+    @GetMapping("/update/{id}")
     public String update(@PathVariable("id") Integer id, Model model) {
         SanPham sp = spRepo.findById(id).orElse(null);
         if (sp != null) {

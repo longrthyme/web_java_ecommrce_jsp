@@ -18,6 +18,27 @@
             margin: 0;
         }
 
+          .styled-button {
+                    background-color: #4CAF50; /* Green background */
+                    color: white; /* White text */
+                    border: none; /* Remove border */
+                    padding: 10px 20px; /* Padding for size */
+                    text-align: center; /* Center text */
+                    text-decoration: none; /* Remove underline */
+                    display: inline-block; /* Inline block for proper spacing */
+                    font-size: 16px; /* Font size */
+                    margin: 4px 2px; /* Margins for spacing */
+                    cursor: pointer; /* Pointer cursor on hover */
+                    border-radius: 5px; /* Rounded corners */
+                    transition: background-color 0.3s ease; /* Smooth transition */
+                     margin-bottom: 20px;
+                }
+
+                /* Hover effect */
+                .styled-button:hover {
+                    background-color: #45a049; /* Darker green on hover */
+                }
+
         .container {
             background-color: white;
             padding: 40px;
@@ -109,7 +130,11 @@
     </style>
 </head>
 <body>
+
 <div class="container mt-4">
+<form action="/san-pham/index" method="get">
+            <button type="submit" class="styled-button">Go Back Product Page </button>
+        </form>
     <!-- Form Thêm Sản Phẩm -->
     <h3>Thêm Sản Phẩm đang bị lỗi</h3>
     <form id="productForm" action="/san-pham/add" method="POST">
@@ -160,6 +185,8 @@
         <button type="button" id="uploadImageBtn" class="btn btn-primary mt-2">Thêm Ảnh</button>
          <div id="uploadResult" class="mt-2"></div>
     </div>
+
+
 </div>
 
 <!-- Modal Nhập Chi Tiết -->

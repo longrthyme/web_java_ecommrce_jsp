@@ -18,22 +18,30 @@
          color: #333;
      }
 
+form  {
+         max-width: 600px;
+         margin: 10px auto;
+
+         border-radius: 8px;
+     }
+
      /* Container */
-     form {
+     form#main  {
          max-width: 600px;
          margin: 50px auto;
-         background: #fff;
+         background-color:white;
          padding: 20px 30px;
          border-radius: 8px;
          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
      }
 
-     /* Form Title */
-     h1 {
-         text-align: center;
-         color: #4CAF50;
-         margin-bottom: 20px;
-     }
+ h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            margin-top:20px;
+
+        }
 
      /* Form Group */
      div {
@@ -67,6 +75,30 @@
          border-color: #4CAF50;
          outline: none;
      }
+
+      .styled-button {
+      width: 200px !important;
+                         background-color: #4CAF50; /* Green background */
+                         color: white; /* White text */
+                         border: none; /* Remove border */
+                         padding: 10px 20px; /* Padding for size */
+                         text-align: center; /* Center text */
+                         text-decoration: none; /* Remove underline */
+                         display: inline-block; /* Inline block for proper spacing */
+                         font-size: 16px; /* Font size */
+                         margin: 4px 2px; /* Margins for spacing */
+                         cursor: pointer; /* Pointer cursor on hover */
+                         border-radius: 5px; /* Rounded corners */
+                         transition: background-color 0.3s ease; /* Smooth transition */
+                          margin-bottom: 20px;
+
+                     }
+
+                     /* Hover effect */
+                     .styled-button:hover {
+                         background-color: #45a049; /* Darker green on hover */
+
+                     }
 
      /* Image Preview */
      img {
@@ -112,18 +144,28 @@
 </head>
 <body>
 
-     <h1>Update Product</h1>
+
+
+
+
    <div class="modal-body">
-     <form action="/san-pham/update/detail/${sanPhamCT.id}" method="post">
+
+    <form action="/san-pham/detail/${id}" method="get">
+                       <button type="submit" class="styled-button">Go Back Detail Page </button>
+                   </form>
+
+
+     <form id="main" action="/san-pham/update/detail/${sanPhamCT.id}" method="post">
          <!-- Hidden field to send the ID -->
+         <h1>Update Product</h1>
          <input type="hidden" name="id" value="${sanPhamCT.id}">
 
-         <div class="mb-3">
+         <div class="mb-3" hidden>
              <label for="maSpct">Mã Sản Phẩm CT</label>
              <input type="text" id="maSpct" name="maSpct" value="${sanPhamCT.maSpct}" class="form-control" required>
          </div>
 
-         <div class="mb-3">
+         <div class="mb-3" hidden>
              <label for="idSanPham">Sản Phẩm</label>
              <input type="text" id="idSanPham" name="idSanPham" value="${sanPhamCT.idSanPham}" class="form-control" required>
          </div>
@@ -144,7 +186,7 @@
 
          <div class="mb-3">
              <label for="thuongHieu">Thương Hiệu</label>
-        <select id="mauSac" name="idMauSac" class="form-control" required>
+        <select id="idThuongHieu" name="idThuongHieu" class="form-control" required>
                  <option value="">Chọn Thương Hiệu</option>
                  <c:forEach var="thuongHieu" items="${thuongHieus}">
                      <option value="${thuongHieu.id}"
@@ -178,7 +220,7 @@
              <input type="number" id="soLuongTon" name="soLuongTon" value="${sanPhamCT.soLuongTon}" class="form-control" required>
          </div>
 
-         <div class="mb-3">
+         <div class="mb-3" hidden>
              <label for="trangThai">Trạng Thái</label>
              <input type="checkbox" id="trangThai" name="trangThai" ${sanPhamCT.trangThai ? 'checked' : ''}>
          </div>

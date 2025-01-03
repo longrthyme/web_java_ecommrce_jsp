@@ -591,7 +591,7 @@
                                     <i class="fas fa-edit"></i>
                                 </button>
                             </a>
-                            <a href="detail/${sp.id}" data-bs-toggle="tooltip" title="Chi tiết nhân viên">
+                            <a href="detail/${sp.id}" data-bs-toggle="tooltip" title="Chi tiết sản phẩm">
                                 <button class="btn btn-primary">
                                     <i class="fas fa-circle-info"></i>
                                 </button>

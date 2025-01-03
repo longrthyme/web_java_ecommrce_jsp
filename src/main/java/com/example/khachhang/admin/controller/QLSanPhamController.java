@@ -169,6 +169,7 @@ public class QLSanPhamController {
         SanPhamCT sanPhamCT = sanPhamCTRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid SanPhamCT ID: " + id));
 
+        model.addAttribute("productId", id);
         model.addAttribute("sanPhamCT", sanPhamCT);
         List<ThuongHieu> thuongHieu = thuongHieuRepository.findAll();
         List<MauSac> mauSac = mauSacRepository.findAll();

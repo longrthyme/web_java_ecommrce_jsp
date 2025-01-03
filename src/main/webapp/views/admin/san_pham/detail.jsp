@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Quản lý sản phẩm</title>
+    <title>Admin - Quản lý chi tiết sản phẩm</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -21,6 +21,28 @@
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
         }
+
+ button[type="submit"] {
+         background-color: #4CAF50;
+         color: white;
+         font-size: 16px;
+         padding: 10px 15px;
+         border: none;
+         border-radius: 4px;
+         cursor: pointer;
+         width: 100%;
+         transition: background-color 0.3s ease-in-out;
+     }
+
+  form#main  {
+         max-width: 600px;
+         margin: 50px auto;
+         background-color:white;
+         padding: 20px 30px;
+         border-radius: 8px;
+         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+     }
+
 
         .container {
             max-width: 100%;
@@ -506,7 +528,7 @@
                 <li class="has-submenu">
                     <a href="#">
                         <i class="fas fa-box"></i>
-                        <span>Quản lý Sản Phẩm</span>
+                        <span>Quản lý chi tiết  Sản Phẩm</span>
                         <i class="fas fa-chevron-down toggle-icon"></i>
                     </a>
                     <ul class="submenu">
@@ -532,34 +554,17 @@
     <!-- Nội dung chính -->
     <div class="main-content"id="content">
         <div class="navbar">
-            <span>Quản lý sản phẩm</span>
+            <span>Quản lý chi tiết  sản phẩm</span>
         </div>
         <div class="content">
             <!-- Search Form -->
-            <h3 class="search-title">Tìm kiếm</h3>
-            <form action="/san-pham/search" method="get" class="d-flex justify-content-between mb-4">
-                <div class="flex-grow-1 pe-2">
-                    <input type="text" name="maSP" class="form-control" placeholder="Nhập mã sản phẩm">
-                </div>
-                <div class="pe-2">
-                    <select name="trangThai" class="form-select">
-                        <option value="">Chọn trạng thái</option>
-                        <option value="true" ${trangThai ? 'selected' : ''}>Đang bán</option>
-                        <option value="false" ${trangThai == false ? 'selected' : ''}>Ngừng bán</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-info">Tìm kiếm</button>
-            </form>
 
-            <!-- Add Button -->
-            <div class="text-end mb-3">
-                <button type="button" class="btn btn-info btn-refresh" onclick="resetForm()">
-                    <i class="fa-solid fa-rotate-right"></i>Làm mới
-                </button>
-                <a href="/san-pham/add" class="btn btn-info btn-add">
-                    <i class="fa-solid fa-plus"></i>Thêm sản phẩm
-                </a>
-            </div>
+    <form action="/san-pham/index" method="get">
+                       <button type="submit" class="styled-button">Go Back Product Page </button>
+                   </form>
+
+
+
 
             <!-- Sản phẩm Table -->
             <table class="table table-hover">
@@ -593,9 +598,9 @@
                                </c:choose></td>
                                  <td>
                                             <a href="/san-pham/update/detail/${spct.id}" data-bs-toggle="tooltip" title="Cập nhật">
-                                                                           <button class="btn btn-primary">
-                                                                               <i class="fas fa-circle-info"></i>
-                                                                           </button>
+                                                                       <button class="btn btn-warning">
+                                                                                                         <i class="fas fa-edit"></i>
+                                                                                                     </button>
                                                                        </a>
 
                                                </td>

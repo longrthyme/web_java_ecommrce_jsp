@@ -14,5 +14,8 @@ public interface SanPhamCTRepository extends JpaRepository<SanPhamCT, Integer> {
 
     @Query(value = "SELECT * FROM san_pham_ct WHERE id_san_pham = ?1", nativeQuery = true)
     List<SanPhamCT> findByIdSanPhamNative(Integer idSanPham);
+
+    List<SanPhamCT> findByIdSanPham(Integer idSanPham);
+
 }
 

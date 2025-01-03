@@ -136,18 +136,67 @@ public class QLSanPhamController {
 
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") Integer id, Model model) {
-        SanPham sp = spRepo.getById(id);
+        // Fetch the SanPham entity by its ID
+        SanPham sp = sanPhamRepository.findById(id).orElseThrow(() -> new RuntimeException("SanPham not found"));
+
+        // Fetch all SanPhamCT records related to the given SanPham ID
+        List<SanPhamCT> sanPhamCTList = sanPhamCTRepository.findByIdSanPham(id);
+
+        // Add both SanPham and related SanPhamCT list to the model
         model.addAttribute("detail", sp);
+        model.addAttribute("sanPhamCTList", sanPhamCTList);
+
+
+
         return "admin/san_pham/detail";
     }
-
     @GetMapping("/update/{id}")
     public String update(@PathVariable("id") Integer id, Model model) {
         SanPham sp = spRepo.findById(id).orElse(null);
         if (sp != null) {
             model.addAttribute("sp", sp);
         }
+
         return "admin/san_pham/update";
+    }
+
+    @GetMapping("/update/detail/{id}")
+    public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
+        SanPhamCT sanPhamCT = sanPhamCTRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid SanPhamCT ID: " + id));
+
+        model.addAttribute("sanPhamCT", sanPhamCT);
+        List<ThuongHieu> thuongHieu = thuongHieuRepository.findAll();
+        List<MauSac> mauSac = mauSacRepository.findAll();
+
+        model.addAttribute("thuongHieus", thuongHieu);
+        model.addAttribute("mauSacs", mauSac);
+
+        return "admin/san_pham/update-detail";  // This view will render the form
+    }
+
+    @PostMapping("/update/detail/{id}")
+    public String updateSanPhamCT(@PathVariable("id") Integer id,
+                                  @ModelAttribute("sanPhamCT") SanPhamCT updatedSanPhamCT) {
+        // Fetch the existing entity
+        SanPhamCT existingSanPhamCT = sanPhamCTRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid SanPhamCT ID: " + id));
+
+        // Update fields
+        existingSanPhamCT.setMaSpct(updatedSanPhamCT.getMaSpct());
+        existingSanPhamCT.setIdSanPham(updatedSanPhamCT.getIdSanPham());
+        existingSanPhamCT.setIdMauSac(updatedSanPhamCT.getIdMauSac());
+        existingSanPhamCT.setIdThuongHieu(updatedSanPhamCT.getIdThuongHieu());
+        existingSanPhamCT.setKichCo(updatedSanPhamCT.getKichCo());
+        existingSanPhamCT.setGia(updatedSanPhamCT.getGia());
+        existingSanPhamCT.setSoLuongTon(updatedSanPhamCT.getSoLuongTon());
+        existingSanPhamCT.setTrangThai(updatedSanPhamCT.getTrangThai());
+
+        // Save the updated entity
+        sanPhamCTRepository.save(existingSanPhamCT);
+
+        // Redirect to a suitable page (e.g., a list of products)
+        return "redirect:/admin/san_pham/detail";
     }
 
     @PostMapping("/upload-image")

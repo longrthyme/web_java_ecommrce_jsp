@@ -220,8 +220,18 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="kichCo">Kích Cỡ</label>
-                        <input type="text" id="kichCo" class="form-control" required />
+                         <label for="kichCo">Kích Cỡ</label>
+                                       <select id="kichCo" name="kichCo" class="form-control" required>
+                                           <option value="">Chọn Kích Cỡ</option>
+                                           <!-- Lặp qua danh sách kích cỡ -->
+                                           <c:forEach var="kichCo" items="${size}">
+                                                <c:forEach var="kichCo" items="${size}">
+                                                                           <option value="${kichCo.id}">${kichCo.size}</option>
+                                                                       </c:forEach>
+
+                                           </c:forEach>
+                                       </select>
+
                     </div>
                     <div class="mb-3">
                         <label for="soLuong">Số Lượng</label>
@@ -246,6 +256,7 @@ var  tempProductId = 0;
         const tenSP = document.getElementById('tenSP').value;
         const gia = document.getElementById('gia').value;
         const loai = document.getElementById('loai').value;
+
 
         if (!maSP || !tenSP || !gia || !loai) {
             alert("Vui lòng nhập đầy đủ thông tin sản phẩm!");
@@ -302,6 +313,7 @@ var  tempProductId = 0;
         const mauSacId = document.getElementById('mauSac').value;
         const thuongHieuId = document.getElementById('thuongHieu').value;
         const kichCo = document.getElementById('kichCo').value;
+
         const soLuong = parseInt(document.getElementById('soLuong').value, 10);
 
         if (!mauSacId || !thuongHieuId || !kichCo || isNaN(soLuong)) {

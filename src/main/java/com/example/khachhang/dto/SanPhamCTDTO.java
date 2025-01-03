@@ -6,7 +6,7 @@ import lombok.Data;
 public class SanPhamCTDTO {
     private Integer idMauSac;
     private Integer idThuongHieu;
-    private String kichCo;
+    private Integer kichCo;
     private Integer soLuong;
     private Integer  idSanPham;
 }

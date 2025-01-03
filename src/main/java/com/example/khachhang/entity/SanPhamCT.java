@@ -25,7 +25,7 @@ public class SanPhamCT {
     private Integer idThuongHieu;
 
     @Column(name = "size")
-    private String kichCo;
+    private Integer kichCo;
 
     @Column(name = "gia_ban")
     private String gia;

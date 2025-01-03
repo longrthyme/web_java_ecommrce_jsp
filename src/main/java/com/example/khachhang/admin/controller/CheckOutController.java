@@ -1,14 +1,8 @@
 package com.example.khachhang.admin.controller;
 
 import com.example.khachhang.dto.SanPhamReturnDTO;
-import com.example.khachhang.entity.MauSac;
-import com.example.khachhang.entity.SanPhamCT;
-import com.example.khachhang.entity.ThuongHieu;
-import com.example.khachhang.entity.Voucher;
-import com.example.khachhang.repository.MauSacRepository;
-import com.example.khachhang.repository.SanPhamCTRepository;
-import com.example.khachhang.repository.ThuongHieuRepository;
-import com.example.khachhang.repository.VoucherRepository;
+import com.example.khachhang.entity.*;
+import com.example.khachhang.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +29,9 @@ public class CheckOutController {
     @Autowired
     private   MauSacRepository mauSacRepository;
 
+    @Autowired
+    private SizeRepository sizeRepository;
+
     @GetMapping("/api/vouchers")
     public List<Voucher> getVouchers() {
         return voucherRepository.findAll();
@@ -60,15 +57,19 @@ public class CheckOutController {
 
         Optional<MauSac> mauSacOptional = mauSacRepository.findById(sanPhamCT.getIdMauSac());
 
-    String thuongHieu = "None"; String mauSac = "";
+        Optional<Size> sizeOptional = sizeRepository.findById(sanPhamCT.getKichCo());
+
+    String thuongHieu = "None"; String mauSac = ""; String size = "";
 
         if(thuongHieuOptional.isPresent()) { thuongHieu = thuongHieuOptional.get().getTenTH();}
 
         if(mauSacOptional.isPresent()) { mauSac = mauSacOptional.get().getTenMS();}
 
+        if(sizeOptional.isPresent()) { size = sizeOptional.get().getSize();}
+
         return new SanPhamReturnDTO(
                 mauSac, thuongHieu,
-                sanPhamCT.getKichCo(),
+                size,
                 sanPhamCT.getSoLuongTon(),
                 trangThai
         );

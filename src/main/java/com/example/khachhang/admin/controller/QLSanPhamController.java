@@ -3,10 +3,7 @@ package com.example.khachhang.admin.controller;
 import com.example.khachhang.dto.SanPhamCTDTO;
 import com.example.khachhang.dto.SanPhamDTO;
 import com.example.khachhang.entity.*;
-import com.example.khachhang.repository.MauSacRepository;
-import com.example.khachhang.repository.SanPhamCTRepository;
-import com.example.khachhang.repository.SanPhamRepository;
-import com.example.khachhang.repository.ThuongHieuRepository;
+import com.example.khachhang.repository.*;
 import com.example.khachhang.service.CloudinaryService;
 import com.example.khachhang.service.SanPhamCTService;
 import com.example.khachhang.service.SanPhamService;
@@ -53,6 +50,9 @@ public class QLSanPhamController {
 
     @Autowired
     private CloudinaryService cloudinaryService;
+
+    @Autowired
+    private SizeRepository sizeRepository;
 
 
 
@@ -106,6 +106,10 @@ public class QLSanPhamController {
         List<ThuongHieu> thuongHieu = thuongHieuRepository.findAll();
         List<MauSac> mauSac = mauSacRepository.findAll();
 
+        List<Size> listSize = sizeRepository.findAll();
+
+        model.addAttribute("size", listSize);
+
         model.addAttribute("sp", new SanPham());
         model.addAttribute("thuongHieus", thuongHieu);
         model.addAttribute("mauSacs", mauSac);
@@ -142,10 +146,10 @@ public class QLSanPhamController {
         // Fetch all SanPhamCT records related to the given SanPham ID
         List<SanPhamCT> sanPhamCTList = sanPhamCTRepository.findByIdSanPham(id);
 
+
         // Add both SanPham and related SanPhamCT list to the model
         model.addAttribute("detail", sp);
         model.addAttribute("sanPhamCTList", sanPhamCTList);
-
 
 
         return "admin/san_pham/detail";
@@ -168,35 +172,38 @@ public class QLSanPhamController {
         model.addAttribute("sanPhamCT", sanPhamCT);
         List<ThuongHieu> thuongHieu = thuongHieuRepository.findAll();
         List<MauSac> mauSac = mauSacRepository.findAll();
+        List<Size> listSize = sizeRepository.findAll();
 
         model.addAttribute("thuongHieus", thuongHieu);
         model.addAttribute("mauSacs", mauSac);
+        model.addAttribute("size", listSize);
 
         return "admin/san_pham/update-detail";  // This view will render the form
     }
 
     @PostMapping("/update/detail/{id}")
     public String updateSanPhamCT(@PathVariable("id") Integer id,
-                                  @ModelAttribute("sanPhamCT") SanPhamCT updatedSanPhamCT) {
-        // Fetch the existing entity
+                                  @ModelAttribute SanPhamCT updatedSanPhamCT) {
+
+        // Fetch the existing SanPhamCT based on ID
         SanPhamCT existingSanPhamCT = sanPhamCTRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid SanPhamCT ID: " + id));
 
-        // Update fields
+        // Update the fields of the existing entity
         existingSanPhamCT.setMaSpct(updatedSanPhamCT.getMaSpct());
         existingSanPhamCT.setIdSanPham(updatedSanPhamCT.getIdSanPham());
         existingSanPhamCT.setIdMauSac(updatedSanPhamCT.getIdMauSac());
         existingSanPhamCT.setIdThuongHieu(updatedSanPhamCT.getIdThuongHieu());
-        existingSanPhamCT.setKichCo(updatedSanPhamCT.getKichCo());
+        existingSanPhamCT.setKichCo(updatedSanPhamCT.getKichCo());  // Map size
         existingSanPhamCT.setGia(updatedSanPhamCT.getGia());
         existingSanPhamCT.setSoLuongTon(updatedSanPhamCT.getSoLuongTon());
         existingSanPhamCT.setTrangThai(updatedSanPhamCT.getTrangThai());
 
+
         // Save the updated entity
         sanPhamCTRepository.save(existingSanPhamCT);
 
-        // Redirect to a suitable page (e.g., a list of products)
-        return "redirect:/admin/san_pham/detail";
+        return "redirect:/admin/san-pham/index"; // Redirect to the updated list or details page
     }
 
     @PostMapping("/upload-image")

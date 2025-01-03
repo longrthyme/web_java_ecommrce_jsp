@@ -114,14 +114,18 @@
 
      <h1>Update Product</h1>
    <div class="modal-body">
-       <form id="detailForm">
+       <form id="detailForm" action="/san-pham/update/detail/${sanPhamCT.id}" method="post">
            <div class="mb-3">
                <label for="mauSac">Màu Sắc</label>
                <select id="mauSac" name="mauSac" class="form-control" required>
                    <option value="">Chọn Màu Sắc</option>
                    <c:forEach var="mauSac" items="${mauSacs}">
-                       <option value="${mauSac.idMS}">${mauSac.tenMS}</option>
+                        <option value="${mauSac.idMS}"
+                                              ${mauSac.idMS == sanPhamCT.idMauSac ? 'selected' : ''}>
+                                          ${mauSac.tenMS}
+                                      </option>
                    </c:forEach>
+
                </select>
            </div>
            <div class="mb-3">
@@ -129,7 +133,10 @@
                <select id="thuongHieu" name="thuongHieu" class="form-control" required>
                    <option value="">Chọn Thương Hiệu</option>
                    <c:forEach var="thuongHieu" items="${thuongHieus}">
-                       <option value="${thuongHieu.id}">${thuongHieu.tenTH}</option>
+                        <option value="${thuongHieu.id}"
+                                             ${thuongHieu.id == sanPhamCT.idThuongHieu ? 'selected' : ''}>
+                                         ${thuongHieu.tenTH}
+                                     </option>
                    </c:forEach>
                </select>
            </div>
@@ -138,20 +145,22 @@
                <select id="kichCo" name="kichCo" class="form-control" required>
                    <option value="">Chọn Kích Cỡ</option>
                    <!-- Lặp qua danh sách kích cỡ -->
-                   <c:forEach var="kichCo" items="${kichCos}">
-                       <option value="${kichCo.idKC}">${kichCo.tenKC}</option>
+                   <c:forEach var="kichCo" items="${size}">
+
+                         <option value="${kichCo.id}"
+                                                                    ${kichCo.id == sanPhamCT.kichCo ? 'selected' : ''}>
+                                                                ${kichCo.size}
+                                                            </option>
                    </c:forEach>
                </select>
            </div>
            <div class="mb-3">
                <label for="soLuong">Số Lượng</label>
-               <input type="number" id="soLuong" name="soLuong" class="form-control" required />
+               <input type="number" id="soLuong" name="soLuong" value="${sanPhamCT.soLuongTon}" class="form-control" required />
            </div>
+               <button type="submit" class="btn btn-primary">Cập Nhật</button>
+
        </form>
-   </div>
-   <div class="modal-footer">
-       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-       <button type="button" id="confirmDetailBtn" class="btn btn-primary">Xác Nhận</button>
    </div>
 
 

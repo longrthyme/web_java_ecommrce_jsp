@@ -203,7 +203,7 @@ public class QLSanPhamController {
         // Save the updated entity
         sanPhamCTRepository.save(existingSanPhamCT);
 
-        return "redirect:/admin/san-pham/index"; // Redirect to the updated list or details page
+        return "redirect:/san-pham/index"; // Redirect to the updated list or details page
     }
 
     @PostMapping("/upload-image")

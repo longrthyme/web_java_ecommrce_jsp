@@ -114,53 +114,78 @@
 
      <h1>Update Product</h1>
    <div class="modal-body">
-       <form id="detailForm" action="/san-pham/update/detail/${sanPhamCT.id}" method="post">
-           <div class="mb-3">
-               <label for="mauSac">Màu Sắc</label>
-               <select id="mauSac" name="mauSac" class="form-control" required>
-                   <option value="">Chọn Màu Sắc</option>
-                   <c:forEach var="mauSac" items="${mauSacs}">
-                        <option value="${mauSac.idMS}"
-                                              ${mauSac.idMS == sanPhamCT.idMauSac ? 'selected' : ''}>
-                                          ${mauSac.tenMS}
-                                      </option>
-                   </c:forEach>
+     <form action="/san-pham/update/detail/${sanPhamCT.id}" method="post">
+         <!-- Hidden field to send the ID -->
+         <input type="hidden" name="id" value="${sanPhamCT.id}">
 
-               </select>
-           </div>
-           <div class="mb-3">
-               <label for="thuongHieu">Thương Hiệu</label>
-               <select id="thuongHieu" name="thuongHieu" class="form-control" required>
-                   <option value="">Chọn Thương Hiệu</option>
-                   <c:forEach var="thuongHieu" items="${thuongHieus}">
-                        <option value="${thuongHieu.id}"
-                                             ${thuongHieu.id == sanPhamCT.idThuongHieu ? 'selected' : ''}>
-                                         ${thuongHieu.tenTH}
-                                     </option>
-                   </c:forEach>
-               </select>
-           </div>
-           <div class="mb-3">
-           <label for="kichCo">Kích Cỡ</label>
-               <select id="kichCo" name="kichCo" class="form-control" required>
-                   <option value="">Chọn Kích Cỡ</option>
-                   <!-- Lặp qua danh sách kích cỡ -->
-                   <c:forEach var="kichCo" items="${size}">
+         <div class="mb-3">
+             <label for="maSpct">Mã Sản Phẩm CT</label>
+             <input type="text" id="maSpct" name="maSpct" value="${sanPhamCT.maSpct}" class="form-control" required>
+         </div>
 
-                         <option value="${kichCo.id}"
-                                                                    ${kichCo.id == sanPhamCT.kichCo ? 'selected' : ''}>
-                                                                ${kichCo.size}
-                                                            </option>
-                   </c:forEach>
-               </select>
-           </div>
-           <div class="mb-3">
-               <label for="soLuong">Số Lượng</label>
-               <input type="number" id="soLuong" name="soLuong" value="${sanPhamCT.soLuongTon}" class="form-control" required />
-           </div>
-               <button type="submit" class="btn btn-primary">Cập Nhật</button>
+         <div class="mb-3">
+             <label for="idSanPham">Sản Phẩm</label>
+             <input type="text" id="idSanPham" name="idSanPham" value="${sanPhamCT.idSanPham}" class="form-control" required>
+         </div>
 
-       </form>
+         <div class="mb-3">
+             <label for="idMauSac">Màu Sắc</label>
+                     <select id="mauSac" name="idMauSac" class="form-control" required>
+
+                 <option value="">Chọn Màu Sắc</option>
+                 <c:forEach var="mauSac" items="${mauSacs}">
+                     <option value="${mauSac.idMS}"
+                             ${mauSac.idMS == sanPhamCT.idMauSac ? 'selected' : ''}>
+                         ${mauSac.tenMS}
+                     </option>
+                 </c:forEach>
+             </select>
+         </div>
+
+         <div class="mb-3">
+             <label for="thuongHieu">Thương Hiệu</label>
+        <select id="mauSac" name="idMauSac" class="form-control" required>
+                 <option value="">Chọn Thương Hiệu</option>
+                 <c:forEach var="thuongHieu" items="${thuongHieus}">
+                     <option value="${thuongHieu.id}"
+                             ${thuongHieu.id == sanPhamCT.idThuongHieu ? 'selected' : ''}>
+                         ${thuongHieu.tenTH}
+                     </option>
+                 </c:forEach>
+             </select>
+         </div>
+
+         <div class="mb-3">
+             <label for="kichCo">Kích Cỡ</label>
+        <select id="kichCo" name="kichCo" class="form-control" required>
+                 <option value="">Chọn Kích Cỡ</option>
+                 <c:forEach var="kichCo" items="${size}">
+                     <option value="${kichCo.id}"
+                             ${kichCo.id == sanPhamCT.kichCo ? 'selected' : ''}>
+                         ${kichCo.size}
+                     </option>
+                 </c:forEach>
+             </select>
+         </div>
+
+         <div class="mb-3">
+             <label for="gia">Giá</label>
+             <input type="text" id="gia" name="gia" value="${sanPhamCT.gia}" class="form-control" required>
+         </div>
+
+         <div class="mb-3">
+             <label for="soLuongTon">Số Lượng Tồn</label>
+             <input type="number" id="soLuongTon" name="soLuongTon" value="${sanPhamCT.soLuongTon}" class="form-control" required>
+         </div>
+
+         <div class="mb-3">
+             <label for="trangThai">Trạng Thái</label>
+             <input type="checkbox" id="trangThai" name="trangThai" ${sanPhamCT.trangThai ? 'checked' : ''}>
+         </div>
+
+         <button type="submit" class="btn btn-primary">Cập Nhật</button>
+     </form>
+
    </div>
 
 

@@ -133,7 +133,7 @@
                  <label for="anhSP">Ảnh sản phẩm :</label>
                  <input type="file" id="anhSPP" name="anhSPP" />
                  <c:if test="${sp.anhSP != null}">
-                     <p>Current Image:</p>
+                     <p>Ảnh hiện tại :</p>
                      <img src="<c:url value='/images/${sp.anhSP}' />" alt="${sp.tenSP}" width="150" />
                  </c:if>
              </div>

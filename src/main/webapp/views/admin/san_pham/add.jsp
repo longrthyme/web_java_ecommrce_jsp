@@ -310,6 +310,8 @@ var  tempProductId = 0;
             var saveCTSPId = 0;
 
 
+
+
    async function addSanPhamCT(payload) {
        try {
            const response = await fetch('/san-pham/detail/add', {

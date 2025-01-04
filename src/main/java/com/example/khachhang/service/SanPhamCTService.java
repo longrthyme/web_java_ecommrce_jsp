@@ -4,8 +4,11 @@ import com.example.khachhang.dto.SanPhamCTDTO;
 import com.example.khachhang.entity.SanPhamCT;
 import com.example.khachhang.repository.SanPhamCTRepository;
 import jakarta.persistence.Column;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class SanPhamCTService {
@@ -15,7 +18,19 @@ public class SanPhamCTService {
     @Autowired
     private SanPhamCTRepository sanPhamCTRepository;
 
-    public void createSanPhamCT(SanPhamCTDTO request) {
+    @Transactional
+    public void updateStatus(Integer id, Boolean newStatus) {
+        Optional<SanPhamCT> optionalSanPhamCT = sanPhamCTRepository.findById(id);
+        if (optionalSanPhamCT.isPresent()) {
+            SanPhamCT sanPhamCT = optionalSanPhamCT.get();
+            sanPhamCT.setTrangThai(newStatus);  // Update the status
+            sanPhamCTRepository.save(sanPhamCT); // Save the updated entity
+        } else {
+            throw new IllegalArgumentException("SanPhamCT with ID " + id + " not found.");
+        }
+    }
+
+    public SanPhamCT createSanPhamCT(SanPhamCTDTO request) {
         // Create a new instance of SanPhamCT
         SanPhamCT sanPhamCT = new SanPhamCT();
 
@@ -35,7 +50,7 @@ public class SanPhamCTService {
         sanPhamCT.setGia("150000.00"); // Example default price
 
         // Save to the database
-        sanPhamCTRepository.save(sanPhamCT);
+        return sanPhamCTRepository.save(sanPhamCT);
     }
 
 }

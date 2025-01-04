@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("san-pham")
@@ -128,12 +129,12 @@ public class QLSanPhamController {
     }
 
     @PostMapping("/detail/add")
-    public ResponseEntity<String> createSanPhamCT(@RequestBody SanPhamCTDTO request) {
+    public ResponseEntity<Integer> createSanPhamCT(@RequestBody SanPhamCTDTO request) {
         try {
-            sanPhamCTService.createSanPhamCT(request);
-            return ResponseEntity.ok("Chi tiết sản phẩm đã được thêm thành công!");
+            SanPhamCT savedSPCT= sanPhamCTService.createSanPhamCT(request);
+            return ResponseEntity.ok(savedSPCT.getId());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi khi thêm chi tiết sản phẩm!");
+            return ResponseEntity.ofNullable(-1);
         }
     }
 
@@ -221,6 +222,24 @@ public class QLSanPhamController {
         }
 
         return ResponseEntity.ok(12);
+    }
+
+    @PostMapping("/updateStatus")
+    public ResponseEntity<Integer> updateStatus(@RequestBody Map<String, String> request) {
+        String id = request.get("id");
+        String status = request.get("status");
+
+        // Logic to update status based on the received id and status
+        System.out.println("Received id: " + id + ", status: " + status);
+
+        try {
+            boolean status1 = status.equals("Còn hàng");
+            System.out.println("status trang thai  " + status1);
+            sanPhamCTService.updateStatus(Integer.valueOf(id), status1);
+            return ResponseEntity.ok(1);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(0);
+        }
     }
 
     @PostMapping("update/{id}")

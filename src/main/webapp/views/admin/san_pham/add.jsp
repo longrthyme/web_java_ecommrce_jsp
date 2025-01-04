@@ -164,6 +164,7 @@
         <table class="table table-bordered">
             <thead>
             <tr>
+            <th>Mã </th>
                 <th>Màu Sắc</th>
                 <th>Thương Hiệu</th>
                 <th>Kích Cỡ</th>
@@ -306,6 +307,40 @@ var  tempProductId = 0;
 
 
 
+            var saveCTSPId = 0;
+
+
+   async function addSanPhamCT(payload) {
+       try {
+           const response = await fetch('/san-pham/detail/add', {
+               method: 'POST',
+               headers: {
+                   'Content-Type': 'application/json',
+               },
+               body: JSON.stringify(payload)
+           });
+
+           if (!response.ok) {
+               throw new Error('Failed to add product detail');
+           }
+
+
+        const message = await response.text();
+        console.log("response 1:", message);
+
+
+           saveCTSPId = message;  // Set saveCTSPId after getting the response
+           document.getElementById('detailForm').reset();
+
+             return saveCTSPId;
+
+       } catch (error) {
+           console.error("Error:", error);
+           alert('Lỗi khi thêm chi tiết sản phẩm!');
+       }
+   }
+
+
     document.getElementById('confirmDetailBtn').addEventListener('click', () => {
         const mauSacId = document.getElementById('mauSac').value;
         const thuongHieuId = document.getElementById('thuongHieu').value;
@@ -328,71 +363,114 @@ console.log("prdocut id is "  + tempProductId);
             };
 
 
-        console.log("data " + payload)
-        ;
-        fetch('/san-pham/detail/add', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload)
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to add product detail');
-                    }
-                    return response.text();
-                })
-                .then(message => {
-                    alert(message);
-                    document.getElementById('detailForm').reset();
-                })
-                .catch(error => {
-                    console.error(error);
-                    alert('Lỗi khi thêm chi tiết sản phẩm!');
-                });
+       (async () => {
+           try {
+               const id = await addSanPhamCT(payload);  // Await the result
+               console.log("saveCTSPId outside:", id);
 
-        const selectElement = document.getElementById("mauSac");
-                  // Get the selected option's text
-                  const mauSac = selectElement.options[selectElement.selectedIndex].text;
-                  // Display the result
+                 const selectElement = document.getElementById("mauSac");
+                                 // Get the selected option's text
+                                 const mauSac = selectElement.options[selectElement.selectedIndex].text;
+                                 // Display the result
 
 
 
-const thuongHieuElement = document.getElementById('thuongHieu');
-const thuongHieuId2 = thuongHieuElement.value;
+               const thuongHieuElement = document.getElementById('thuongHieu');
+               const thuongHieuId2 = thuongHieuElement.value;
 
-// Get the text content of the selected option
-const thuongHieuText = thuongHieuElement.options[thuongHieuElement.selectedIndex].text;
+               // Get the text content of the selected option
+               const thuongHieuText = thuongHieuElement.options[thuongHieuElement.selectedIndex].text;
 
-console.log('Selected Thương Hiệu Text:', thuongHieuText);
-
-
-console.log("mau sac " + mauSac);
-console.log("thuong hieu " + thuongHieu);
-        const status = soLuong > 0 ? 'Còn hàng' : 'Hết hàng';
-
-           let newRow = "<tr>";
-               newRow += "<td>" + mauSac + "</td>";
-               newRow += "<td>" + thuongHieuText + "</td>";
-               newRow += "<td>" + kichCo + "</td>";
-               newRow += "<td>" + soLuong + "</td>";
-               newRow += "<td>" + status + "</td>";
-               newRow += "<td><button class='btn btn-warning btn-sm'>Thay đổi trạng thái</button></td>";
-               newRow += "</tr>";
+               console.log('Selected Thương Hiệu Text:', thuongHieuText);
 
 
-                                       console.log("Generated newRow:", newRow); // Log the constructed HTML string
+               console.log("mau sac " + mauSac);
+               console.log("thuong hieu " + thuongHieu);
+                       const status = soLuong > 0 ? 'Còn hàng' : 'Hết hàng';
+
+                       console.log("value before  " + saveCTSPId);
+
+                          let newRow = "<tr data-id='" + saveCTSPId + "'>";
+
+                          newRow += "<td>" + saveCTSPId + "</td>";
+                              newRow += "<td>" + mauSac + "</td>";
+                              newRow += "<td>" + thuongHieuText + "</td>";
+                              newRow += "<td>" + kichCo + "</td>";
+                              newRow += "<td>" + soLuong + "</td>";
+                              newRow += "<td>" + status + "</td>";
+                              newRow += "<td><button class='btn btn-warning btn-sm'>Thay đổi trạng thái</button></td>";
+                              newRow += "</tr>";
+
+
+                                                      console.log("Generated newRow:", newRow); // Log the constructed HTML string
 
 
 
-        document.getElementById('detailsTable').insertAdjacentHTML('beforeend', newRow);
+                       document.getElementById('detailsTable').insertAdjacentHTML('beforeend', newRow);
 
-        document.getElementById('detailForm').reset();
-        const detailModal = bootstrap.Modal.getInstance(document.getElementById('detailModal'));
-        detailModal.hide();
+                       document.getElementById('detailForm').reset();
+                       const detailModal = bootstrap.Modal.getInstance(document.getElementById('detailModal'));
+                       detailModal.hide();
+
+               // You can now safely use id (or saveCTSPId) here
+           } catch (error) {
+               console.error("Error handling outside:", error);
+           }
+       })();
+
+
+
+
 
     });
+
+    function updateStatusAPI(id, newStatus) {
+        console.log("id " + id + " new status " + newStatus);
+        return fetch(`/san-pham/updateStatus`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: id, status: newStatus })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to update status');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Status updated successfully:', data);
+        })
+        .catch(error => {
+            console.error('Error updating status:', error);
+            alert('Failed to update status. Please try again.');
+        });
+    }
+
+
+    document.getElementById('detailsTable').addEventListener('click', function (event) {
+        if (event.target.classList.contains('btn-warning')) {  // Check if the clicked element is the button
+            const row = event.target.closest('tr');             // Get the row where the button was clicked
+            const statusCell = row.cells[5];                    // Get the status cell in that row
+            const currentStatus = statusCell.innerText;         // Get current status value
+
+            console.log("status is " + currentStatus );
+
+            // Toggle the status (Active <-> Inactive)
+            const newStatus = currentStatus === 'Còn hàng' ? 'Hết hàng' : 'Còn hàng';
+
+            // Update the status cell visually
+            statusCell.innerText = newStatus;
+
+            // Optionally call an API to persist the change
+            const id = row.dataset.id;  // Assuming row has a data-id attribute for identifying the item
+            console.log("id sent " + id);
+            updateStatusAPI(id, newStatus);
+        }
+    });
+
+
 
 
       document.getElementById("uploadImageBtn").addEventListener("click", async () => {

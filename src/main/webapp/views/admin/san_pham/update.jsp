@@ -119,18 +119,18 @@
 
             <!-- Product Code -->
             <div>
-                <label for="maSP">Product Code:</label>
+                <label for="maSP">Mã sp:</label>
                 <input type="text" id="maSP" name="maSP" value="${sp.maSP}" required />
             </div>
 
             <!-- Product Name -->
             <div>
-                <label for="tenSP">Product Name:</label>
+                <label for="tenSP">Tên sản phẩm:</label>
                 <input type="text" id="tenSP" name="tenSP" value="${sp.tenSP}" required />
             </div>
 
            <div>
-                 <label for="anhSP">Product Image:</label>
+                 <label for="anhSP">Ảnh sản phẩm :</label>
                  <input type="file" id="anhSPP" name="anhSPP" />
                  <c:if test="${sp.anhSP != null}">
                      <p>Current Image:</p>
@@ -140,19 +140,19 @@
 
             <!-- Product Price -->
             <div>
-                <label for="gia">Price:</label>
+                <label for="gia">Giá:</label>
                 <input type="number" id="gia" name="gia" value="${sp.gia}" step="0.01" required />
             </div>
 
             <!-- Product Type -->
             <div>
-                <label for="loai">Category:</label>
+                <label for="loai">Danh mục :</label>
                 <input type="text" id="loai" name="loai" value="${sp.loai}" required />
             </div>
 
             <!-- Product Status -->
             <div>
-                <label for="trangThai">Status:</label>
+                <label for="trangThai">Trạng thái :</label>
                 <select id="trangThai" name="trangThai" required>
                     <option value="true" <c:if test="${sp.trangThai}">selected</c:if>>Active</option>
                     <option value="false" <c:if test="${!sp.trangThai}">selected</c:if>>Inactive</option>
@@ -161,7 +161,7 @@
 
             <!-- Submit Button -->
             <div>
-                <button type="submit">Update Product</button>
+                <button type="submit">Cập nhật</button>
             </div>
         </form>
 

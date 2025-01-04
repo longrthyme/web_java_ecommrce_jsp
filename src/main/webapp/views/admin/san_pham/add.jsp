@@ -133,7 +133,7 @@
 
 <div class="container mt-4">
 <form action="/san-pham/index" method="get">
-            <button type="submit" class="styled-button">Go Back Product Page </button>
+            <button type="submit" class="styled-button">Quay lại  </button>
         </form>
     <!-- Form Thêm Sản Phẩm -->
     <h3>Thêm Sản Phẩm đang bị lỗi</h3>

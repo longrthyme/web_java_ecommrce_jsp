@@ -112,7 +112,7 @@
 </head>
 <body>
 
-     <h1>Update Product</h1>
+     <h1>Cập nhật sản phẩm </h1>
         <form action="<c:url value='/san-pham/update/${sp.id}' />" method="post" enctype="multipart/form-data">
             <!-- Hidden input to include the product ID -->
             <input type="hidden" name="id" value="${sp.id}" />
@@ -154,8 +154,8 @@
             <div>
                 <label for="trangThai">Trạng thái :</label>
                 <select id="trangThai" name="trangThai" required>
-                    <option value="true" <c:if test="${sp.trangThai}">selected</c:if>>Active</option>
-                    <option value="false" <c:if test="${!sp.trangThai}">selected</c:if>>Inactive</option>
+                    <option value="true" <c:if test="${sp.trangThai}">selected</c:if>>Đang bán </option>
+                    <option value="false" <c:if test="${!sp.trangThai}">selected</c:if>>Hết hàng </option>
                 </select>
             </div>
 

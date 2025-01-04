@@ -151,13 +151,13 @@ form  {
    <div class="modal-body">
 
     <form action="/san-pham/detail/${id}" method="get">
-                       <button type="submit" class="styled-button">Go Back Detail Page </button>
+                       <button type="submit" class="styled-button">Quay lại  </button>
                    </form>
 
 
      <form id="main" action="/san-pham/update/detail/${sanPhamCT.id}" method="post">
          <!-- Hidden field to send the ID -->
-         <h1>Update Product</h1>
+         <h1>Cập nhật sản phẩm </h1>
          <input type="hidden" name="id" value="${sanPhamCT.id}">
 
          <div class="mb-3" hidden>

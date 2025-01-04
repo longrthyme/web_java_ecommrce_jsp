@@ -560,7 +560,7 @@
             <!-- Search Form -->
 
     <form action="/san-pham/index" method="get">
-                       <button type="submit" class="styled-button">Go Back Product Page </button>
+                       <button type="submit" class="styled-button">Quay lại  </button>
                    </form>
 
 

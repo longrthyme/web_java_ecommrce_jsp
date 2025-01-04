@@ -136,7 +136,7 @@
             <button type="submit" class="styled-button">Quay lại  </button>
         </form>
     <!-- Form Thêm Sản Phẩm -->
-    <h3>Thêm Sản Phẩm đang bị lỗi</h3>
+    <h3>Thêm Sản Phẩm</h3>
     <form id="productForm" action="/san-pham/add" method="POST">
 
         <div class="row">

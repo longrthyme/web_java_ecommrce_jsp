@@ -224,12 +224,9 @@
                                        <select id="kichCo" name="kichCo" class="form-control" required>
                                            <option value="">Chọn Kích Cỡ</option>
                                            <!-- Lặp qua danh sách kích cỡ -->
-                                           <c:forEach var="kichCo" items="${size}">
-                                                <c:forEach var="kichCo" items="${size}">
+  <c:forEach var="kichCo" items="${size}">
                                                                            <option value="${kichCo.id}">${kichCo.size}</option>
                                                                        </c:forEach>
-
-                                           </c:forEach>
                                        </select>
 
                     </div>
